@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Route Optimization Engine</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/script.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header><h1>Route Optimization Engine</h1><p>Create your road network, then discover the shortest available route.</p></header>
+    <div id="feedback" role="status" aria-live="polite"></div>
+    <section class="card">
+      <h2>1. Add a location</h2>
+      <form id="location-form"><label for="location-name">Location name</label><div class="inline"><input id="location-name" maxlength="80" placeholder="e.g. Owerri" required /><button>Add location</button></div></form>
+      <p id="locations-list" class="muted"></p>
+    </section>
+    <section class="card">
+      <h2>2. Add a road</h2>
+      <form id="road-form">
+        <div class="columns"><div><label for="road-from">From</label><select id="road-from" required></select></div><div><label for="road-to">To</label><select id="road-to" required></select></div></div>
+        <label for="road-distance">Distance (km)</label><input id="road-distance" type="number" step="any" min="0.001" placeholder="e.g. 12.5" required />
+        <button>Add road</button>
+      </form>
+    </section>
+    <section class="card">
+      <h2>3. Calculate the shortest route</h2>
+      <form id="route-form"><div class="columns"><div><label for="route-start">Starting location</label><select id="route-start" required></select></div><div><label for="route-destination">Destination</label><select id="route-destination" required></select></div></div><button>Calculate route</button></form>
+      <div id="route-result" class="result" aria-live="polite">Add or select locations to calculate a route.</div>
+    </section>
+    <section class="card">
+      <h2>4. Block or unblock roads</h2><p class="muted">Block a road and calculate again to see the new shortest available route.</p>
+      <div id="roads-list"></div>
+    </section>
+    <footer>Demo network: the distances are sample values, not verified driving distances. All roads are bidirectional.</footer>
+  </main>
+</body>
+</html>
