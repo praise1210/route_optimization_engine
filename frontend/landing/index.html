@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Connect your locations and find the shortest available route through your road network with Routefinder." />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Routefinder - Every journey starts with a smarter route</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="/landing/landing.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header page-width">
+    <a class="brand" href="/" aria-label="Routefinder home">
+      <img src="/landing/routefinder-logo.png" alt="Routefinder" width="1254" height="1254" />
+    </a>
+    <nav aria-label="Main navigation">
+      <a class="how-link" href="#how-it-works">How it works</a>
+      <a class="nav-planner" href="/planner">Open route planner <span aria-hidden="true">&#8599;</span></a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero page-width" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> A CLEARER WAY FROM A TO B</p>
+        <h1 id="hero-title">Every journey<br />starts with a<br /><span>smarter route.</span></h1>
+        <p class="hero-description">Connect your locations, explore the possibilities, and find the shortest available way forward.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="/planner">Find my shortest route <span aria-hidden="true">&#8594;</span></a>
+          <a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">&#8595;</span></a>
+        </div>
+        <p class="hero-note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8" /></svg> Your locations. Your roads. Your way forward.</p>
+      </div>
+      <figure class="route-preview" aria-labelledby="preview-caption">
+        <div class="preview-topline">
+          <span class="preview-label">A LITTLE CLARITY GOES A LONG WAY</span>
+          <span class="preview-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16" /></svg></span>
+        </div>
+        <svg class="network-map" viewBox="0 0 540 430" role="img" aria-labelledby="network-title network-description">
+          <title id="network-title">An example road network</title>
+          <desc id="network-description">The highlighted route from Port Harcourt through Oyigbo to Aba is 25 kilometers. An alternative through Eleme is 35 kilometers. Distances are illustrative.</desc>
+          <defs>
+            <pattern id="map-grid" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#d9e5ec" /></pattern>
+            <filter id="route-shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#1479e8" flood-opacity="0.16" /></filter>
+          </defs>
+          <rect width="540" height="430" fill="url(#map-grid)" />
+          <g fill="#eaf0f2">
+            <rect x="23" y="124" width="70" height="57" rx="13" transform="rotate(-18 58 152)" />
+            <rect x="177" y="36" width="76" height="44" rx="11" transform="rotate(-18 215 58)" />
+            <rect x="312" y="288" width="92" height="59" rx="13" transform="rotate(-18 358 317)" />
+            <rect x="432" y="211" width="74" height="84" rx="13" transform="rotate(-18 469 253)" />
+            <rect x="112" y="331" width="78" height="52" rx="12" transform="rotate(-18 151 357)" />
+          </g>
+          <g fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M-20 208 120 161 287 205 560 120" />
+            <path d="M40 440 173 298 316 269 546 330" />
+            <path d="m236-20 36 135 150 107 43 228" />
+            <path d="M-20 70 115 110 167 216 90 340" />
+          </g>
+          <path d="M90 325 C52 258 63 164 132 108 S319 55 416 108" fill="none" stroke="#b8c9d6" stroke-width="6" stroke-linecap="round" stroke-dasharray="7 10" />
+          <path d="M90 325 C147 329 154 259 229 252 S350 265 369 200 S395 144 416 108" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" />
+          <path d="M90 325 C147 329 154 259 229 252 S350 265 369 200 S395 144 416 108" fill="none" stroke="#087ff5" stroke-width="7" stroke-linecap="round" filter="url(#route-shadow)" />
+          <g>
+            <circle cx="132" cy="108" r="9" fill="white" stroke="#a5b9c8" stroke-width="3" />
+            <circle cx="229" cy="252" r="10" fill="white" stroke="#087ff5" stroke-width="4" />
+            <circle cx="90" cy="325" r="23" fill="#087ff5" opacity="0.10" />
+            <circle cx="90" cy="325" r="12" fill="#087ff5" stroke="white" stroke-width="4" />
+            <circle cx="416" cy="108" r="28" fill="#10b998" opacity="0.12" />
+          </g>
+          <g transform="translate(400 74)" fill="#10ae88" stroke="white" stroke-width="3">
+            <path d="M16 0C5 0-3 8-3 19c0 14 19 32 19 32s19-18 19-32C35 8 27 0 16 0Z" />
+            <circle cx="16" cy="18" r="6" fill="white" stroke="none" />
+          </g>
+          <g class="map-labels" fill="#173653">
+            <text x="106" y="77">Eleme</text>
+            <text x="226" y="286">Oyigbo</text>
+            <text x="414" y="57" text-anchor="middle">Aba</text>
+            <text x="38" y="366">Port Harcourt</text>
+          </g>
+          <g class="distance-labels" fill="#657b8f"><text x="139" y="290">15 km</text><text x="351" y="247">10 km</text></g>
+          <g transform="translate(191 103)">
+            <rect width="134" height="31" rx="15.5" fill="white" stroke="#dce5ec" />
+            <text class="alternative-label" x="67" y="20" text-anchor="middle" fill="#728395">Alternative &#183; 35 km</text>
+          </g>
+          <g transform="translate(304 331)">
+            <rect width="172" height="37" rx="18.5" fill="#e0f7ee" />
+            <circle cx="19" cy="18.5" r="4" fill="#12a77e" />
+            <text class="shortest-label" x="33" y="23.5" fill="#117957">Shortest path found</text>
+          </g>
+        </svg>
+        <div class="route-summary">
+          <div class="summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 11 16-7-7 16-2-7Z" /></svg></div>
+          <div class="summary-copy"><span>YOUR SHORTEST ROUTE</span><strong>Port Harcourt <span aria-hidden="true">&#8594;</span> Oyigbo <span aria-hidden="true">&#8594;</span> Aba</strong></div>
+          <div class="summary-distance">25<span>km</span></div>
+        </div>
+        <figcaption id="preview-caption">Example network <span aria-hidden="true">&#183;</span> Sample distances, made simple.</figcaption>
+      </figure>
+    </section>
+    <section class="how-section page-width" id="how-it-works" aria-labelledby="how-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">LESS GUESSWORK. MORE DIRECTION.</p><h2 id="how-title">A clear route in three simple steps.</h2></div>
+        <p>From your first location<br />to your next possibility.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <div class="step-top"><span class="step-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" /><circle cx="12" cy="10" r="2.5" /></svg></span><span class="step-number" aria-hidden="true">01</span></div>
+          <h3>Add the places that matter.</h3><p>Add the locations for your journey. Every destination starts with a name.</p>
+        </li>
+        <li>
+          <div class="step-top"><span class="step-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="5" r="2" /><circle cx="19" cy="19" r="2" /><path d="M7 5h8a4 4 0 0 1 0 8H9a4 4 0 0 0 0 8h8" /></svg></span><span class="step-number" aria-hidden="true">02</span></div>
+          <h3>Connect the possibilities.</h3><p>Join your locations with roads and add their distances. Build a network that fits your route.</p>
+        </li>
+        <li>
+          <div class="step-top"><span class="step-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 11 16-7-7 16-2-7Z" /></svg></span><span class="step-number" aria-hidden="true">03</span></div>
+          <h3>Find your best way forward.</h3><p>Calculate the shortest path. If a road is blocked, close it and calculate an available alternative.</p>
+        </li>
+      </ol>
+    </section>
+  </main>
+  <footer class="site-footer page-width">
+    <p class="footer-brand">Route<span>finder</span><span class="footer-dot" aria-hidden="true">.</span></p>
+    <p>A little direction. A better journey.</p>
+    <a href="/planner">Let's find your route <span aria-hidden="true">&#8599;</span></a>
+  </footer>
+</body>
+</html>
