@@ -117,3 +117,5 @@ Use one server worker if demonstrating in-memory edits; restart/deploy resets ch
 ## Security/validation
 
 The API validates non-empty location names, unique names (case-insensitively), positive finite distances, existing locations, duplicate undirected roads, boolean blocked statuses, and missing/unreachable routes. User-provided text is displayed as text rather than HTML.
+
+ deplyment link: https://routefinder-lah9.onrender.com/
