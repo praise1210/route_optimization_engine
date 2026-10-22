@@ -1,0 +1,9 @@
+{
+  "locations": ["Port Harcourt", "Eleme", "Oyigbo", "Aba"],
+  "roads": [
+    {"id": 1, "from": "Port Harcourt", "to": "Eleme", "distance": 10, "blocked": false},
+    {"id": 2, "from": "Port Harcourt", "to": "Oyigbo", "distance": 15, "blocked": false},
+    {"id": 3, "from": "Eleme", "to": "Aba", "distance": 25, "blocked": false},
+    {"id": 4, "from": "Oyigbo", "to": "Aba", "distance": 10, "blocked": false}
+  ]
+}
