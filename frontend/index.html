@@ -1,40 +1,109 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Route Optimization Engine</title>
-  <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Build your road network, visualize every connection, and find the shortest available route with Routefinder." />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Route planner - Routefinder</title>
+  <link rel="icon" href="data:," />
   <link rel="stylesheet" href="/style.css" />
-  <script src="/script.js" defer></script>
+  <!-- Native modules let the planner import the SVG renderer without a build tool. -->
+  <script type="module" src="/script.js"></script>
 </head>
 <body>
-  <main class="container">
-    <header><h1>Route Optimization Engine</h1><p>Create your road network, then discover the shortest available route.</p></header>
-    <div id="feedback" role="status" aria-live="polite"></div>
-    <section class="card">
-      <h2>1. Add a location</h2>
-      <form id="location-form"><label for="location-name">Location name</label><div class="inline"><input id="location-name" maxlength="80" placeholder="e.g. Owerri" required /><button>Add location</button></div></form>
-      <p id="locations-list" class="muted"></p>
-    </section>
-    <section class="card">
-      <h2>2. Add a road</h2>
-      <form id="road-form">
-        <div class="columns"><div><label for="road-from">From</label><select id="road-from" required></select></div><div><label for="road-to">To</label><select id="road-to" required></select></div></div>
-        <label for="road-distance">Distance (km)</label><input id="road-distance" type="number" step="any" min="0.001" placeholder="e.g. 12.5" required />
-        <button>Add road</button>
-      </form>
-    </section>
-    <section class="card">
-      <h2>3. Calculate the shortest route</h2>
-      <form id="route-form"><div class="columns"><div><label for="route-start">Starting location</label><select id="route-start" required></select></div><div><label for="route-destination">Destination</label><select id="route-destination" required></select></div></div><button>Calculate route</button></form>
-      <div id="route-result" class="result" aria-live="polite">Add or select locations to calculate a route.</div>
-    </section>
-    <section class="card">
-      <h2>4. Block or unblock roads</h2><p class="muted">Block a road and calculate again to see the new shortest available route.</p>
-      <div id="roads-list"></div>
-    </section>
-    <footer>Demo network: the distances are sample values, not verified driving distances. All roads are bidirectional.</footer>
+  <a class="skip-link" href="#main">Skip to route planner</a>
+  <!-- Local SVG symbols keep icons consistent and avoid external icon libraries. -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none">
+    <defs>
+      <symbol id="icon-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+      <symbol id="icon-route" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 5h8a4 4 0 0 1 0 8H9a4 4 0 0 0 0 8h8"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+      <symbol id="icon-swap" viewBox="0 0 24 24"><path d="M8 4v16m-4-4 4 4 4-4M16 20V4m-4 4 4-4 4 4"/></symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="icon-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+      <symbol id="icon-fit" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 8l-5-5m13 5 5-5M8 16l-5 5m13-5 5 5"/></symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M6 7a7 7 0 0 1 11-2l3 3M4 16l3 3a7 7 0 0 0 11-2"/></symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 9v12h14V9M9 21v-8h6v8"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header page-width">
+    <div class="header-brand-group">
+      <a class="brand" href="/landing/index.html" aria-label="Routefinder home"><img src="/landing/routefinder-logo.png" alt="Routefinder" width="1254" height="1254" /></a>
+      <span class="header-divider" aria-hidden="true"></span><span class="header-context">Route planner</span>
+    </div>
+    <nav class="header-nav" aria-label="Main navigation">
+      <a class="nav-link" href="#network-editor">Build your network</a>
+      <a class="home-link" href="/landing/index.html"><svg aria-hidden="true"><use href="#icon-home"/></svg>Back to home</a>
+    </nav>
+  </header>
+
+  <main class="container page-width" id="main">
+    <div class="page-heading">
+      <div class="page-intro"><p class="eyebrow">YOUR JOURNEY, MADE CLEAR</p><h1>Find your way forward.</h1><p class="page-description">Build your network. Explore your connections. Take the shortest available route.</p></div>
+      <div class="network-status" id="network-status" data-state="loading"><span class="status-dot" aria-hidden="true"></span><span id="network-status-text">Loading your network</span></div>
+    </div>
+    <!-- This live status region reports form feedback without moving keyboard focus. -->
+    <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+
+    <div class="workspace">
+      <aside class="planner-sidebar" aria-label="Route and network controls">
+        <section class="panel route-card" aria-labelledby="route-heading">
+          <div class="panel-heading"><span class="section-icon" aria-hidden="true"><svg><use href="#icon-route"/></svg></span><div><p class="panel-kicker">LET'S GET YOU THERE</p><h2 id="route-heading">Where are you headed?</h2></div></div>
+          <!-- Existing form/field IDs remain stable; script.js sends the same API payloads. -->
+          <form id="route-form">
+            <div class="route-fields">
+              <div class="field from-field"><label for="route-start">Starting location</label><select id="route-start" required disabled aria-describedby="route-form-hint"></select></div>
+              <button class="swap-button" id="swap-locations" type="button" aria-label="Swap starting location and destination" title="Swap locations" disabled><svg aria-hidden="true"><use href="#icon-swap"/></svg></button>
+              <div class="field to-field"><label for="route-destination">Destination</label><select id="route-destination" required disabled aria-describedby="route-form-hint"></select></div>
+            </div>
+            <button id="route-submit" class="button button-primary route-submit" type="submit" disabled><span id="route-submit-label">Find shortest route</span><svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+            <p id="route-form-hint" class="form-hint">Choose your stops, or select a destination on the map.</p>
+          </form>
+        </section>
+
+        <section class="panel network-editor" id="network-editor" aria-labelledby="editor-heading">
+          <div class="panel-heading editor-heading"><span class="section-icon" aria-hidden="true"><svg><use href="#icon-pin"/></svg></span><div><p class="panel-kicker">MAKE IT YOUR OWN</p><h2 id="editor-heading">Build your network</h2></div></div>
+          <form id="location-form">
+            <label for="location-name">Add a location</label>
+            <div class="inline"><input id="location-name" maxlength="80" placeholder="e.g. Owerri" autocomplete="off" required /><button id="add-location" class="button button-secondary button-icon" type="submit" aria-label="Add location"><svg aria-hidden="true"><use href="#icon-plus"/></svg></button></div>
+          </form>
+          <div id="locations-list" class="location-tags" role="list" aria-label="Locations in your network"></div>
+          <div class="form-divider" aria-hidden="true"></div>
+          <form id="road-form">
+            <div class="columns"><div class="field"><label for="road-from">Road from</label><select id="road-from" required disabled></select></div><div class="field"><label for="road-to">Road to</label><select id="road-to" required disabled></select></div></div>
+            <label for="road-distance">Road distance</label>
+            <div class="input-with-unit"><input id="road-distance" type="number" step="any" min="0.001" inputmode="decimal" placeholder="e.g. 12.5" required aria-describedby="road-form-hint" /><span aria-hidden="true">km</span></div>
+            <button id="add-road" class="button button-secondary" type="submit" disabled><svg aria-hidden="true"><use href="#icon-plus"/></svg>Add road</button>
+            <p id="road-form-hint" class="form-hint">Roads connect both ways. Add at least two locations to connect them.</p>
+          </form>
+        </section>
+      </aside>
+
+      <div class="planner-main">
+        <section class="panel map-panel" aria-labelledby="map-heading">
+          <div class="map-heading"><div class="map-heading-copy"><p class="eyebrow">SEE THE POSSIBILITIES</p><h2 id="map-heading">Your network, at a glance.</h2></div><div class="map-toolbar" role="group" aria-label="Network view controls">
+            <button id="refresh-network" class="icon-button" type="button" aria-label="Refresh network" title="Refresh network"><svg aria-hidden="true"><use href="#icon-refresh"/></svg></button>
+            <button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out" title="Zoom out"><svg aria-hidden="true"><use href="#icon-minus"/></svg></button>
+            <button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in" title="Zoom in"><svg aria-hidden="true"><use href="#icon-plus"/></svg></button>
+            <button id="fit-map" class="icon-button" type="button" aria-label="Fit all locations in the view" title="Fit all locations"><svg aria-hidden="true"><use href="#icon-fit"/></svg></button>
+          </div></div>
+          <div class="network-metrics" aria-label="Network totals"><span class="metric"><strong id="location-count">0</strong> locations</span><span class="metric"><strong id="road-count">0</strong> roads</span><span class="metric"><span class="status-dot" aria-hidden="true"></span><strong id="open-road-count">0</strong> open</span></div>
+          <!-- The SVG renderer draws actual API data. Positions are schematic, not GPS coordinates. -->
+          <div class="map-canvas"><svg id="network-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="group" aria-labelledby="network-title network-description"><title id="network-title">Your road network</title><desc id="network-description">Locations and roads will appear after the network loads.</desc></svg></div>
+          <div class="map-footer"><div class="map-legend" aria-label="Map legend"><span class="legend-item"><span class="legend-line route" aria-hidden="true"></span>Selected route</span><span class="legend-item"><span class="legend-line" aria-hidden="true"></span>Open road</span><span class="legend-item"><span class="legend-line blocked" aria-hidden="true"></span>Blocked road</span></div><p class="map-note">Select a destination. Drag places to arrange the view.</p></div>
+          <p class="map-note map-disclaimer">Schematic view. Distances come from your roads, not geographic coordinates.</p>
+        </section>
+
+        <!-- script.js builds the summary with textContent to safely display user-entered names. -->
+        <section class="panel result-panel" id="result-panel" data-state="loading" aria-label="Route result" aria-live="polite" aria-atomic="true"><div id="route-result"><div class="result-empty"><p class="result-eyebrow">ROUTE SUMMARY</p><h2>Your next route is taking shape.</h2><p>Loading your locations and connections.</p></div></div></section>
+
+        <section class="panel roads-panel" aria-labelledby="roads-heading"><div class="roads-heading"><div><p class="panel-kicker">KEEP YOUR OPTIONS OPEN</p><h2 id="roads-heading">Manage your roads</h2></div><span id="road-count-badge" class="road-count-badge">0 roads</span></div><p class="panel-description">Block a connection and calculate again to explore another way.</p><div id="roads-list"></div></section>
+      </div>
+    </div>
   </main>
+  <footer class="site-footer page-width"><p>Demo network. Changes reset when the server restarts. All roads work in both directions.</p><a href="/landing/index.html">Routefinder <span aria-hidden="true">&#8599;</span></a></footer>
 </body>
 </html>
